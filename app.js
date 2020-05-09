@@ -6,6 +6,7 @@ var ejsLint = require('ejs-lint');
 var config = require('./config/database');
 var session = require('express-session');
 var expressValidator = require('express-validator');
+var fileUpload = require('express-fileupload');
 
 
 //Connect to DB
@@ -28,6 +29,9 @@ app.use(express.static(path.join(__dirname, 'public')));
 //set global error variables
 app.locals.errors = null;
 
+//express file upload middleware
+app.use(fileUpload());
+
 //body-parser middleware (get values from Form)
 app.use(bodyParser.urlencoded({ extended: false }));
 //parse application/json
@@ -36,9 +40,9 @@ app.use(bodyParser.json());
 //Express-Session middleware
 app.use(session({
     secret: 'keyboard cat',
-    resave: false,
+    resave: true,
     saveUninitialized: true,
-    cookie: { secure: true }
+    // cookie: { secure: true }
 }));
 
 //Express-Validator middleware
@@ -69,8 +73,12 @@ app.use(function(req, res, next) {
 //set routes
 var pages = require('./routes/pages.js');
 var adminPages = require('./routes/admin_pages.js');
+var adminCategories = require('./routes/admin_categories.js');
+var adminProducts = require('./routes/admin_products.js');
 app.use('/', pages);
 app.use('/admin/pages', adminPages);
+app.use('/admin/categories', adminCategories);
+app.use('/admin/products', adminProducts);
 
 //start the server
 var port = 3000;

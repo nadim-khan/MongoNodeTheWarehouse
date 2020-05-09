@@ -1,0 +1,46 @@
+<%-include ('../_layouts/adminheader') %>
+    <h1>Products</h1>
+    <a href="/admin/products/add-product" class="btn btn-primary">Add a new product</a>
+    <br/>
+    <%if(count > 0) {%>
+        <table class="table table-hover  table-striped">
+            <thead>
+                <tr class="home">
+                    <th scope="col">Product</th>
+                    <th scope="col">Price</th>
+                    <th scope="col">Category</th>
+                    <th scope="col">Image</th>
+                    <th scope="col">Edit</th>
+                    <th scope="col">Delete</th>
+                </tr>
+            </thead>
+            <tbody>
+                <%products.forEach(function(product){%>
+                    <tr>
+                        <td scope="row">
+                            <%= product.title %>
+                        </td>
+                        <td scope="row">
+                            <%= parseFloat(product.price).fixed(2) %>
+                        </td>
+                        <td scope="row">
+                            <%= product.category %>
+                        </td>
+                        <td scope="row">
+                            <%if(product.image == '') {%>
+                                <img src="/images/noimage.jpg" alt="">
+                                <%}else{%>
+                                    <img src="/product_images/<%=product.id%>/<%=product.image%>" alt="">
+                                    <%}%>
+                        </td>
+                        <td scope="row"><a href="/admin/products/edit-product/<%=product._id%>">Edit</a></td>
+                        <td scope="row"><a class="confirmDelete" href="/admin/products/delete-product/<%=product._id%>">Delete</a></td>
+
+                    </tr>
+                    <%})%>
+            </tbody>
+        </table>
+        <%}else{%>
+            <h2 align="center">There are no products</h2>
+            <%}%>
+                <%- include('../_layouts/adminfooter'); %>
